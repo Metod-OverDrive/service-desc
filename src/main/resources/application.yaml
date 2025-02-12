@@ -1,0 +1,27 @@
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    enabled: true
+    cache: false
+  application:
+    name: service-desc
+  datasource:
+    url: jdbc:postgresql://localhost:5439/camunda_test?currentSchema=sd_schema
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    change-log: classpath:liquibase/db.changelog.yaml
+    enabled: true
+    default-schema: sd_schema
+camunda:
+  bpm:
+    generic-properties:
+      properties:
+        historyTimeToLive: P1D
+    admin_user:
+      id: admin
+      password: admin
+      first-name: admin
+      last-name: admin

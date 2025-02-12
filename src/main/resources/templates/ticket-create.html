@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Создание заявки</title>
+</head>
+<body>
+<h1>Создание новой заявки</h1>
+
+<form th:action="@{/web/tickets/create}" method="post">
+    <label for="userName">Имя пользователя:</label><br>
+    <input type="text" id="userName" name="userName" required><br><br>
+
+    <label for="description">Описание:</label><br>
+    <textarea id="description" name="description" rows="5" cols="30" required></textarea><br><br>
+
+    <label for="pcNameOrIp">PC Name or IP:</label><br>
+    <input type="text" id="pcNameOrIp" name="pcNameOrIp"><br><br>
+
+    <button type="submit">Создать заявку</button>
+</form>
+</body>
+</html>
