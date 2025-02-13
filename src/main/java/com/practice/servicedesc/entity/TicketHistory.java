@@ -16,13 +16,9 @@ public class TicketHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-/*    @ManyToOne
-    @JoinColumn(name = "ticket_id", nullable = false, referencedColumnName = "id", foreignKey = @ForeignKey(onDelete = ForeignKey.Action.CASCADE))
-    private Ticket ticket;*/
-
     @ManyToOne
     @JoinColumn(name = "specialist_id", referencedColumnName = "id")
-    private Specialist specialist;
+    private User specialist;
 
     @Column(name = "previous_status")
     private String previousStatus;

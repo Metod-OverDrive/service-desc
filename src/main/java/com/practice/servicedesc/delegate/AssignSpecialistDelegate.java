@@ -1,13 +1,14 @@
 package com.practice.servicedesc.delegate;
 
 import com.practice.servicedesc.entity.Specialist;
+import com.practice.servicedesc.entity.User;
 import com.practice.servicedesc.entity.enums.TicketStatus;
 import com.practice.servicedesc.entity.enums.TicketWorkStatus;
-import com.practice.servicedesc.repository.SpecialistRepository;
 import com.practice.servicedesc.entity.Ticket;
 import com.practice.servicedesc.entity.TicketWork;
 import com.practice.servicedesc.repository.TicketRepository;
 import com.practice.servicedesc.repository.TicketWorkRepository;
+import com.practice.servicedesc.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -21,17 +22,17 @@ public class AssignSpecialistDelegate implements JavaDelegate {
 
     private final TicketWorkRepository ticketWorkRepository;
     private final TicketRepository ticketRepository;
-    private final SpecialistRepository specialistRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void execute(DelegateExecution execution) {
         Long ticketId = (Long) execution.getVariable("ticketId");
         Long specialistId = (Long) execution.getVariable("specialistId");
 
-        Specialist specialist = specialistRepository.findById(specialistId).orElse(null);
+        User user = userRepository.findById(specialistId).orElse(null);
         Ticket ticket = ticketRepository.findById(ticketId).orElse(null);
 
-        if (specialist == null || ticket == null) {
+        if (user == null || ticket == null) {
             throw new RuntimeException("Ticket or specialist isn't exist.");
         }
 
@@ -44,7 +45,7 @@ public class AssignSpecialistDelegate implements JavaDelegate {
             work.setTicket(ticket);
         }
 
-        work.setSpecialist(specialist);
+        work.setSpecialist(user);
         work.setTicketWorkStatus(TicketWorkStatus.ASSIGN);
         work.setAssignedAt(LocalDateTime.now());
 

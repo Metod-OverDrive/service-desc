@@ -2,9 +2,11 @@ package com.practice.servicedesc.service.impl;
 
 import com.practice.servicedesc.entity.Specialist;
 import com.practice.servicedesc.entity.Ticket;
+import com.practice.servicedesc.entity.User;
 import com.practice.servicedesc.entity.enums.TicketStatus;
-import com.practice.servicedesc.repository.SpecialistRepository;
 import com.practice.servicedesc.repository.TicketRepository;
+import com.practice.servicedesc.repository.UserRepository;
+import com.practice.servicedesc.service.UserService;
 import com.practice.servicedesc.web.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.camunda.bpm.engine.RuntimeService;
@@ -19,7 +21,7 @@ public class TicketServiceImpl {
 
     private final RuntimeService runtimeService;
     private final TicketRepository ticketRepository;
-    private final SpecialistRepository specialistRepository;
+    private final UserService userService;
 
     public List<Ticket> getTicketsByEmail(String username) {
         return ticketRepository.getTicketByUserNameIgnoreCase(username);
@@ -53,8 +55,7 @@ public class TicketServiceImpl {
     public void selectTicket(Long ticketId, Long specialistId) {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new EntityNotFoundException("Ticket doesn't exist."));
-        Specialist specialist = specialistRepository.findById(specialistId)
-                .orElseThrow(() -> new EntityNotFoundException("Specialist doesn't exist."));
+        User specialist = userService.findById(specialistId);
 
         runtimeService.createMessageCorrelation("SpecialistSelectTicket")
                 .processInstanceId(ticket.getProcessId())

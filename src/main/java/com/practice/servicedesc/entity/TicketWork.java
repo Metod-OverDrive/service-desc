@@ -23,7 +23,7 @@ public class TicketWork {
 
     @OneToOne
     @JoinColumn(name = "specialist_id")
-    private Specialist specialist;
+    private User specialist;
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)

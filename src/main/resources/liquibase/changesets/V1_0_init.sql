@@ -1,51 +1,52 @@
 -- liquibase formatted sql
 -- changeset eve:1
 
---Table: tickets
+CREATE TABLE users
+(
+    id           BIGSERIAL PRIMARY KEY,
+    name         VARCHAR(100) NOT NULL,
+    email        VARCHAR(100) NOT NULL UNIQUE,
+    password     VARCHAR(100) NOT NULL,
+    role         VARCHAR(32)  NOT NULL,
+    phone_number VARCHAR(32)  NOT NULL,
+    is_active    BOOLEAN      NOT NULL DEFAULT TRUE,
+    created_at   TIMESTAMP             DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE tickets
 (
     id            BIGSERIAL PRIMARY KEY,
+    user_id       BIGINT REFERENCES users (id),
     process_id    VARCHAR(36),
     user_name     VARCHAR(100)  NOT NULL,
     description   VARCHAR(1000) NOT NULL,
     pc_name_or_ip VARCHAR(64),
     status        VARCHAR(32)   NOT NULL DEFAULT 'NEW',
     is_closed     BOOLEAN       NOT NULL DEFAULT FALSE,
+    is_overdue    BOOLEAN       NOT NULL DEFAULT FALSE,
     created_at    TIMESTAMP              DEFAULT CURRENT_TIMESTAMP,
-    updated_at    TIMESTAMP              DEFAULT CURRENT_TIMESTAMP
+    updated_at    TIMESTAMP              DEFAULT CURRENT_TIMESTAMP,
+    closed_at     TIMESTAMP
 );
 
---Table: specialists
-CREATE TABLE specialists
-(
-    id           BIGSERIAL PRIMARY KEY,
-    name         VARCHAR(100) NOT NULL,
-    email        VARCHAR(100) NOT NULL UNIQUE,
-    phone_number VARCHAR(32)  NOT NULL,
-    is_active    BOOLEAN      NOT NULL DEFAULT TRUE,
-    created_at   TIMESTAMP             DEFAULT CURRENT_TIMESTAMP
-);
-
---Table: tickets_specialists
 CREATE TABLE tickets_work
 (
     id            BIGSERIAL PRIMARY KEY,
     ticket_id     BIGINT NOT NULL REFERENCES tickets (id) ON DELETE CASCADE,
-    specialist_id BIGINT REFERENCES specialists (id),
+    specialist_id BIGINT REFERENCES users (id),
     status        VARCHAR(32),
     assigned_at   TIMESTAMP,
     unassigned_at TIMESTAMP
 );
 
---Table: tickets_history
 CREATE TABLE tickets_history
 (
     id              BIGSERIAL PRIMARY KEY,
     ticket_id       BIGINT      NOT NULL REFERENCES tickets (id) ON DELETE CASCADE,
-    specialist_id   BIGINT REFERENCES specialists (id),
+    specialist_id   BIGINT REFERENCES users (id),
     previous_status VARCHAR(50),
     new_status      VARCHAR(50) NOT NULL,
-    action_type     VARCHAR(50), -- ASSIGN, UNASSIGN, STATUS_UPDATE
+    action_type     VARCHAR(50),
     action_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
