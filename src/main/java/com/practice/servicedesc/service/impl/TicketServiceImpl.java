@@ -6,6 +6,7 @@ import com.practice.servicedesc.entity.User;
 import com.practice.servicedesc.entity.enums.TicketStatus;
 import com.practice.servicedesc.repository.TicketRepository;
 import com.practice.servicedesc.repository.UserRepository;
+import com.practice.servicedesc.service.TicketService;
 import com.practice.servicedesc.service.UserService;
 import com.practice.servicedesc.web.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +18,19 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class TicketServiceImpl {
+public class TicketServiceImpl implements TicketService {
 
     private final RuntimeService runtimeService;
     private final TicketRepository ticketRepository;
     private final UserService userService;
 
-    public List<Ticket> getTicketsByEmail(String username) {
-        return ticketRepository.getTicketByUserNameIgnoreCase(username);
+    public List<Ticket> getTicketsByUserId(Long userId) {
+        return ticketRepository.getByUserId(userId);
+    }
+
+    @Override
+    public Ticket findTicketById(Long ticketId) {
+        return ticketRepository.findById(ticketId).orElseThrow(() -> new EntityNotFoundException("Ticket doesn't exist."));
     }
 
     public Ticket createTicket(Ticket ticket) {
@@ -50,6 +56,15 @@ public class TicketServiceImpl {
 
     public List<Ticket> getNotAssignedTickets() {
         return ticketRepository.getNotAssignedTickets();
+    }
+
+    public List<Ticket> getTicketsBySpecialist(Long specId, TicketStatus status) {
+        List<Ticket> tickets = ticketRepository.getBySpecialistId(specId, status.toString());
+        if (status == TicketStatus.IN_PROGRESS) {
+            tickets = tickets.stream().filter(el -> !el.getIsClosed()).toList();
+        }
+
+        return tickets;
     }
 
     public void selectTicket(Long ticketId, Long specialistId) {

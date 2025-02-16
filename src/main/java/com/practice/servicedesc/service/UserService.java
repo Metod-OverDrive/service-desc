@@ -5,4 +5,5 @@ import com.practice.servicedesc.entity.User;
 public interface UserService {
 
     User findById(Long id);
+    User getByEmail(String email);
 }

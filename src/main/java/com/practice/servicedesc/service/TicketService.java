@@ -7,13 +7,15 @@ import java.util.List;
 
 public interface TicketService {
 
-    List<Ticket> getTicketsByEmail(String username);
+    Ticket findTicketById(Long ticketId);
 
     Ticket createTicket(Ticket ticket);
 
     void closeTicket(Long ticketId);
 
     List<Ticket> getNotAssignedTickets();
+
+    public List<Ticket> getTicketsBySpecialist(Long specId, TicketStatus status);
 
     void selectTicket(Long ticketId, Long specialistId);
 
