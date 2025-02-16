@@ -1,9 +1,10 @@
 function closeTicket(ticketId) {
     if (confirm("Вы уверены, что хотите закрыть эту заявку?")) {
-        fetch(`/web/tickets?ticketId=${ticketId}`, {
+        fetch(`/web/users/tickets?ticketId=${ticketId}`, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').getAttribute('content')
             }
         })
             .then(response => {

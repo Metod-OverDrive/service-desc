@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <div th:insert="~{main/header}"></div>
+    <h1>Добро пожаловать!</h1>
+    <p>Куда хотите перейти?</p>
+
+    <a th:href="@{/web/users/tickets}" class="btn">Перейти к своим заявкам</a>
+    <a th:if="${role == 'SPECIALIST'}" th:href="@{/web/spec/tickets}" class="btn">Перейти к выполнению заявок</a>
+
+    <div th:insert="~{main/footer}"></div>
+</body>
+</html>

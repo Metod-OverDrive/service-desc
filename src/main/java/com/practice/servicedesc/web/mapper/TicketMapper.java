@@ -1,40 +1,30 @@
 package com.practice.servicedesc.web.mapper;
 
 import com.practice.servicedesc.entity.Ticket;
-import com.practice.servicedesc.web.dto.TicketDto;
+import com.practice.servicedesc.web.dto.ticket.TicketDto;
+import org.mapstruct.IterableMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
-public class TicketMapper {
+@Mapper(componentModel = "spring")
+public interface TicketMapper {
 
-    public Ticket toEntity(TicketDto dto) {
-        return Ticket.builder()
-                .id(dto.getId())
-                .userName(dto.getUserName())
-                .description(dto.getDescription())
-                .pcNameOrIp(dto.getPcNameOrIp())
-                .createdAt(dto.getCreatedAt())
-                .updatedAt(dto.getUpdatedAt())
-                .status(dto.getStatus())
-                .isClosed(dto.getIsClosed())
-                .isOverdue(dto.getIsOverdue())
-                .closedAt(dto.getClosedAt())
-                .build();
-    }
+    Ticket toEntity(TicketDto dto);
 
-    public TicketDto toDto(Ticket entity) {
-        return TicketDto.builder()
-                .id(entity.getId())
-                .userName(entity.getUserName())
-                .description(entity.getDescription())
-                .pcNameOrIp(entity.getPcNameOrIp())
-                .createdAt(entity.getCreatedAt())
-                .updatedAt(entity.getUpdatedAt())
-                .status(entity.getStatus())
-                .isClosed(entity.getIsClosed())
-                .isOverdue(entity.getIsOverdue())
-                .closedAt(entity.getClosedAt())
-                .build();
-    }
+    TicketDto toDto(Ticket entity);
 
+    List<TicketDto> toDto(List<Ticket> entityList);
+
+    @Named("WithoutTicketWork")
+    @Mapping(target = "ticketWork", ignore = true)
+    TicketDto toDtoWithoutTicketWork(Ticket entity);
+
+    @IterableMapping(qualifiedByName = "WithoutTicketWork")
+    @Mapping(target = "ticketWork", ignore = true)
+    List<TicketDto> toDtoWithoutTicketWork(List<Ticket> entityList);
 }
