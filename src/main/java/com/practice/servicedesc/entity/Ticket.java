@@ -19,6 +19,9 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "user_id")
+    private Long userId;
+
     @Column(name = "process_id")
     private String processId;
 
@@ -28,8 +31,8 @@ public class Ticket {
     @Column(name = "description")
     private String description;
 
-    @OneToOne(mappedBy = "ticket", fetch = FetchType.LAZY)
-    @JoinColumn()
+    @OneToOne(mappedBy = "ticket")
+    @JoinColumn(name = "ticket_id")
     private TicketWork ticketWork;
 
     @Column(name = "pc_name_or_ip")

@@ -15,6 +15,13 @@ spring:
     change-log: classpath:liquibase/db.changelog.yaml
     enabled: true
     default-schema: sd_schema
+
+security:
+  jwt:
+    secret: ZnVtb2Z1bW9mdW1vZnVtb2Z1bW9mdW1vZnVtbw==
+    access: 1
+    refresh: 30
+
 camunda:
   bpm:
     generic-properties:
