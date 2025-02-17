@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface TicketService {
 
+    List<Ticket> getTicketsByUserId(Long userId);
+
     Ticket findTicketById(Long ticketId);
 
     Ticket createTicket(Ticket ticket);

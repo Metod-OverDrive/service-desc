@@ -22,7 +22,6 @@ public class TicketServiceImpl implements TicketService {
 
     private final RuntimeService runtimeService;
     private final TicketRepository ticketRepository;
-    private final UserService userService;
 
     public List<Ticket> getTicketsByUserId(Long userId) {
         return ticketRepository.getByUserId(userId);
@@ -70,7 +69,6 @@ public class TicketServiceImpl implements TicketService {
     public void selectTicket(Long ticketId, Long specialistId) {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new EntityNotFoundException("Ticket doesn't exist."));
-        User specialist = userService.findById(specialistId);
 
         runtimeService.createMessageCorrelation("SpecialistSelectTicket")
                 .processInstanceId(ticket.getProcessId())
