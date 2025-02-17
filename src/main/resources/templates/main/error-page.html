@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<h2>Validation Errors</h2>
+<ul>
+    <th:block th:each="error : ${errors}">
+        <li><strong th:text="${error.key}"></strong>: <span th:text="${error.value}"></span></li>
+    </th:block>
+</ul>
+<a href="/web/home">Go Back</a>
+</body>
+</html>

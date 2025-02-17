@@ -1,6 +1,5 @@
 package com.practice.servicedesc.delegate;
 
-import com.practice.servicedesc.entity.Specialist;
 import com.practice.servicedesc.entity.User;
 import com.practice.servicedesc.entity.enums.TicketStatus;
 import com.practice.servicedesc.entity.enums.TicketWorkStatus;
@@ -9,6 +8,7 @@ import com.practice.servicedesc.entity.TicketWork;
 import com.practice.servicedesc.repository.TicketRepository;
 import com.practice.servicedesc.repository.TicketWorkRepository;
 import com.practice.servicedesc.repository.UserRepository;
+import com.practice.servicedesc.web.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -33,7 +33,7 @@ public class AssignSpecialistDelegate implements JavaDelegate {
         Ticket ticket = ticketRepository.findById(ticketId).orElse(null);
 
         if (user == null || ticket == null) {
-            throw new RuntimeException("Ticket or specialist isn't exist.");
+            throw new EntityNotFoundException("Ticket or specialist isn't exist.");
         }
 
         ticket.setStatus(TicketStatus.IN_PROGRESS);

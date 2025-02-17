@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,17 +29,17 @@ public class UserTicketWebController {
         List<TicketDto> ticketsDto = ticketMapper.toDtoWithoutTicketWork(tickets);
 
         model.addAttribute("tickets", ticketsDto);
-        return "ticket-list";
+        return "users/ticket-list";
     }
 
     @GetMapping("/create")
     public String showCreateTicketForm(Model model) {
         model.addAttribute("ticket", new TicketDto());
-        return "ticket-create";
+        return "users/ticket-create";
     }
 
     @PostMapping("/create")
-    public String createTicket(@ModelAttribute TicketDto dto, @AuthenticationPrincipal JwtEntity details, Model model) {
+    public String createTicket(@Validated @ModelAttribute TicketDto dto, @AuthenticationPrincipal JwtEntity details, Model model) {
         Ticket ticket = ticketMapper.toEntity(dto);
         ticket.setUserId(details.getId());
         ticket.setUserName(details.getUsername());
@@ -51,6 +52,6 @@ public class UserTicketWebController {
     @DeleteMapping
     public String closeTicket(@RequestParam Long ticketId) {
         ticketService.closeTicket(ticketId);
-        return "ticket-list";
+        return "users/ticket-list";
     }
 }
